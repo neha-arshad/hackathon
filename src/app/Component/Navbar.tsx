@@ -1,16 +1,15 @@
-// components/FrontlineNavbar.tsx
-"use client"
-// components/ProfessionalNavbar.tsx
+"use client";
 import React, { useState } from "react";
+import Link from "next/link";
 
 const FrontLineNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { name: "Home", link: "#" },
-    { name: "Services", link: "#" },
-    { name: "Admin Dashboard", link: "#" },
-    { name: "Contact", link: "#" },
+    { name: "Home", link: "/" },
+    { name: "Services", link: "/ServicesPage" },
+    { name: "Admin Dashboard", link: "/AdminDashboard" },
+    { name: "Contact", link: "/ContactPage" },
   ];
 
   return (
@@ -28,19 +27,19 @@ const FrontLineNavbar = () => {
               key={item.name}
               className="hover:text-blue-600 transition-colors duration-200 cursor-pointer"
             >
-              <a href={item.link}>{item.name}</a>
+              <Link href={item.link}>{item.name}</Link>
             </li>
           ))}
         </ul>
 
         {/* CTA Button */}
         <div className="hidden md:flex">
-          <a
-            href="#"
+          <Link
+            href="/RequestSupport"
             className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             Request Support
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -59,17 +58,20 @@ const FrontLineNavbar = () => {
         <div className="md:hidden bg-white shadow-md">
           <ul className="flex flex-col items-center py-4 space-y-3 text-gray-700">
             {menuItems.map((item) => (
-              <li key={item.name} className="hover:text-blue-600 transition-colors duration-200">
-                <a href={item.link}>{item.name}</a>
+              <li
+                key={item.name}
+                className="hover:text-blue-600 transition-colors duration-200"
+              >
+                <Link href={item.link}>{item.name}</Link>
               </li>
             ))}
             <li>
-              <a
-                href="#"
+              <Link
+                href="/RequestSupport"
                 className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 Request Support
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
