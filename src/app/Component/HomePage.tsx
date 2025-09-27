@@ -265,7 +265,7 @@ const HomePage = () => {
   return (
     <div className="font-sans">
       {/* Hero + Query Section */}
-      <section className="relative flex items-center justify-center bg-gradient-to-r from-blue-600 via-indigo-700 to-cyan-500 text-white min-h-screen overflow-hidden px-6">
+      <section className="relative flex items-center justify-center bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white min-h-screen overflow-hidden px-6">
         {/* Decorative Background Icons */}
         <FaBolt className="absolute top-20 left-10 text-yellow-400 text-9xl opacity-15 animate-bounce" />
         <FaHeartbeat className="absolute bottom-20 right-10 text-red-400 text-9xl opacity-15 animate-pulse" />
@@ -297,7 +297,7 @@ const HomePage = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="e.g. Electricity issue in my area"
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-300 backdrop-blur-sm"
+              className="flex-1 border text-black  border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-300 backdrop-blur-sm"
             />
             <button
               type="submit"
@@ -308,7 +308,7 @@ const HomePage = () => {
           </form>
 
           {/* Loading & Response */}
-          {loading && <p className="text-gray-200 mt-2">⏳ Processing...</p>}
+          {loading && <p className="text-black mt-2">⏳ Processing...</p>}
           {response && (
             <div className="bg-white text-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 mt-6 max-w-xl mx-auto">
               <h3 className="font-semibold mb-2 text-lg">Response:</h3>

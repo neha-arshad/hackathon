@@ -1,111 +1,105 @@
-// "use client";
+"use client";
 
-// import React from "react";
-// import { FaBolt, FaHeartbeat, FaGavel } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
 
-// const AdminDashboard = () => {
-//   // Sample data (mock)
-//   const stats = [
-//     {
-//       name: "Utility Requests",
-//       count: 45,
-//       icon: <FaBolt className="text-yellow-400 text-3xl" />,
-//     },
-//     {
-//       name: "Health Requests",
-//       count: 30,
-//       icon: <FaHeartbeat className="text-red-500 text-3xl" />,
-//     },
-//     {
-//       name: "Criminal Reports",
-//       count: 15,
-//       icon: <FaGavel className="text-gray-700 text-3xl" />,
-//     },
-//   ];
+type Message = {
+  id: number;
+  sender: "user" | "agent";
+  text: string;
+};
 
-//   const latestRequests = [
-//     {
-//       id: 101,
-//       type: "Utility",
-//       description: "Electricity outage in Block A",
-//       status: "Pending",
-//     },
-//     {
-//       id: 102,
-//       type: "Health",
-//       description: "Medical assistance required",
-//       status: "In Progress",
-//     },
-//     {
-//       id: 103,
-//       type: "Criminal",
-//       description: "Report of theft in Sector 5",
-//       status: "Resolved",
-//     },
-//   ];
+let idCounter = 0;
 
-//   return (
-//     <div className="font-sans min-h-screen bg-gray-50 p-6">
-//       <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
-//         Admin Dashboard
-//       </h1>
+const AdminDashboard = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-//       {/* Stats Cards */}
-//       <div className="grid md:grid-cols-3 gap-6 mb-12">
-//         {stats.map((stat) => (
-//           <div
-//             key={stat.name}
-//             className="bg-white rounded-xl shadow-lg p-6 flex items-center gap-4 hover:shadow-2xl transition-shadow"
-//           >
-//             {stat.icon}
-//             <div>
-//               <h2 className="text-xl font-semibold text-gray-800">
-//                 {stat.name}
-//               </h2>
-//               <p className="text-gray-600 text-lg">{stat.count}</p>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
+  const handleSend = () => {
+    if (!input.trim()) return;
 
-//       {/* Latest Requests Table */}
-//       <div className="bg-white shadow-lg rounded-xl p-6 overflow-x-auto">
-//         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-//           Latest Requests
-//         </h2>
-//         <table className="w-full text-left border-collapse">
-//           <thead>
-//             <tr>
-//               <th className="border-b p-3 text-gray-600">ID</th>
-//               <th className="border-b p-3 text-gray-600">Type</th>
-//               <th className="border-b p-3 text-gray-600">Description</th>
-//               <th className="border-b p-3 text-gray-600">Status</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {latestRequests.map((req) => (
-//               <tr key={req.id} className="hover:bg-gray-100 transition-colors">
-//                 <td className="border-b p-3">{req.id}</td>
-//                 <td className="border-b p-3">{req.type}</td>
-//                 <td className="border-b p-3">{req.description}</td>
-//                 <td
-//                   className={`border-b p-3 font-semibold ${
-//                     req.status === "Pending"
-//                       ? "text-yellow-500"
-//                       : req.status === "In Progress"
-//                       ? "text-blue-500"
-//                       : "text-green-500"
-//                   }`}
-//                 >
-//                   {req.status}
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
+    const userMessage: Message = {
+      id: idCounter++,
+      sender: "user",
+      text: input,
+    };
 
-// export default AdminDashboard;
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+
+    // Simulate AI response line by line
+    const responseLines = [
+      `Hi!`,
+      `I got your message: "${userMessage.text}"`,
+      `How can I assist you further?`,
+    ];
+
+    let lineIndex = 0;
+
+    const sendLine = () => {
+      if (lineIndex >= responseLines.length) return;
+      const agentMessage: Message = {
+        id: idCounter++,
+        sender: "agent",
+        text: responseLines[lineIndex],
+      };
+      setMessages((prev) => [...prev, agentMessage]);
+      lineIndex++;
+      setTimeout(sendLine, 600); // 600ms delay per line
+    };
+
+    setTimeout(sendLine, 600);
+  };
+
+  // Auto-scroll
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  return (
+    <div className="flex flex-col h-full max-h-[700px] w-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl shadow-2xl p-6">
+      <h1 className="text-3xl font-extrabold mb-5 text-gray-800 text-center">
+        Frontline Worker Support AI
+      </h1>
+
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto mb-4 space-y-3 px-3 py-2 bg-white rounded-2xl shadow-inner flex flex-col"
+      >
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`px-4 py-2 rounded-2xl max-w-[70%] break-words ${
+              msg.sender === "user"
+                ? "bg-blue-500 text-white self-end ml-auto"
+                : "bg-gray-200 text-gray-800 self-start"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex gap-3">
+        <input
+          type="text"
+          className="flex-1 border border-gray-300 rounded-2xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 placeholder-gray-400"
+          placeholder="Type your message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        />
+        <button
+          onClick={handleSend}
+          className="bg-indigo-500 text-white px-6 py-3 rounded-2xl hover:bg-indigo-600 transition-shadow shadow-md"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;
