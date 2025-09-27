@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import HomePage from "./HomePage";
 
-const SplashScreen = () => {
+const Splashscreen = () => {
   const [showHome, setShowHome] = useState(false);
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const SplashScreen = () => {
   );
 };
 
-export default SplashScreen;
+export default Splashscreen;
